@@ -43,7 +43,6 @@ export default function MakePost({ config, setPosts }) {
             .catch(
                 response => {
                     alert("An unexpected error occurred ");
-                    console.log(response);
                 }
             );
     }

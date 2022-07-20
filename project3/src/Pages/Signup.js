@@ -47,7 +47,7 @@ export default function Signup() {
 
         if (userToken != null) {
             alert("Signup Successfull");
-            navigate('/Home');
+            navigate('/posts/me');
         }
     }
 

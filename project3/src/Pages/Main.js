@@ -19,7 +19,7 @@ export default function Main() {
       <div className="">
         <div className="text-white m-5 block-example border border-light bg-primary p-2 m-5">
           <div className="text-end">
-            <Link to={'/Login'} className="btn btn-outline-light p-2 mt-3 me-4 align-left"> Login / Signup </Link>
+            <Link to={'/login'} className="btn btn-outline-light p-2 mt-3 me-4 align-left"> Login / Signup </Link>
           </div>
           <h1 className="text-center mt-4 mb-5 ms-3"><strong> ALL PUBLIC POSTS </strong></h1>
         </div>

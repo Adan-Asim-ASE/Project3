@@ -46,7 +46,7 @@ export default function EditPost() {
         await axios.post(process.env.REACT_APP_BACKEND_API + "posts/edit/" + id, post, config)
             .then(data => {
                 alert("Post updated successfully");
-                navigate('/Home');
+                navigate('/posts/me');
             })
             .catch(response => {
                 alert("An unexpected error occurred ");

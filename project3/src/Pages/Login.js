@@ -44,7 +44,7 @@ export default function Login() {
 
         if (userToken != null) {
             alert("Login Successful");
-            navigate('/Home');
+            navigate('/posts/me');
         }
     }
 
@@ -73,7 +73,7 @@ export default function Login() {
                     />
                 </Form.Group>
                 <div className="text-center mt-4">No account? Click here to
-                    <NavLink to={{ pathname: "/Signup" }}>
+                    <NavLink to={{ pathname: "/signup" }}>
                         <span className="text-primary NavLink"> SignUp</span>
                     </NavLink>
                 </div>

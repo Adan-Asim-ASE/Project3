@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router';
 import Makepost from "./Makepost";
 import Logout from "./Logout";
 import axios from 'axios';
-import getCookie from './helper';
+import getCookie from '../utils/HelperFunctions';
 import './style.css';
 
 export default function Home() {
@@ -20,10 +20,6 @@ export default function Home() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (userToken === 'none' || userToken === undefined) {
-      alert("You need to login first")
-      navigate('/');
-    }
 
     fetch(process.env.REACT_APP_BACKEND_API + "posts/me", config)
       .then(response => response.json())
@@ -33,7 +29,7 @@ export default function Home() {
       .catch(
         response => {
           alert("An unexpected error occurred, please try loggin in again");
-          navigate('/Login');
+          navigate('/login');
         }
       );
   }, []);
@@ -62,10 +58,10 @@ export default function Home() {
           </div>
           <h1 className="text-center mt-4 mb-4 ms-0"><strong> MY POSTS </strong></h1>
           <div className="text-center mb-4">
-            <Link to={'/Home'} className="btn btn-outline-light p-2 mt-3 ms-5 me-3 align-left"> Home </Link>
-            <Link to={'/Home/PublicPosts'} state={{ user: posts[0]?.userName }} className="btn btn-outline-light p-2 mt-3 me-3 align-left"> Public posts </Link>
-            <Link to={'/Home/Me/Published'} className="btn btn-outline-light p-2 mt-3 me-3 align-left"> My published posts </Link>
-            <Link to={'/Home/Me/Drafted'} className="btn btn-outline-light p-2 mt-3 me-3 align-left"> My drafted posts </Link>
+            <Link to={'/posts/me'} className="btn btn-outline-light p-2 mt-3 ms-5 me-3 align-left"> Home </Link>
+            <Link to={'/posts/public'} state={{ user: posts[0]?.userName }} className="btn btn-outline-light p-2 mt-3 me-3 align-left"> Public posts </Link>
+            <Link to={'/posts/me/published'} className="btn btn-outline-light p-2 mt-3 me-3 align-left"> My published posts </Link>
+            <Link to={'/posts/me/drafted'} className="btn btn-outline-light p-2 mt-3 me-3 align-left"> My drafted posts </Link>
             <Logout userToken={userToken} />
           </div>
         </div>
@@ -79,7 +75,7 @@ export default function Home() {
               <p className="lead text-dark text-center">{post.content}</p>
               <p className="text-dark text-end me-3">Made by user: {post.userName}</p>
               <div className="text-center mt-2">
-                <Link to={'/Post/Edit/' + post.id} state={{ post: post, config: config }} className="btn btn-outline-primary btn-md me-3">Modify</Link>
+                <Link to={'/post/' + post.id + '/edit'} state={{ post: post, config: config }} className="btn btn-outline-primary btn-md me-3">Modify</Link>
                 <button onClick={() => removePost(post.id)} className="btn btn-outline-primary btn-md">Delete </button>
               </div>
             </div>
