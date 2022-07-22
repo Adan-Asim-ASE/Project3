@@ -1,4 +1,4 @@
-import { Navigate } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 import getCookie from '../utils/HelperFunctions';
 
 const ProtectedRoute = ({ children }) => {
@@ -8,7 +8,7 @@ const ProtectedRoute = ({ children }) => {
     alert("You need to login first")
     return <Navigate to="/login" replace />;
   }
-  return children;
+  return <Outlet/>;
 };
 
 export default ProtectedRoute;

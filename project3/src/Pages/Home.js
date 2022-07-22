@@ -3,40 +3,30 @@ import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router';
 import Makepost from "./Makepost";
 import Logout from "./Logout";
-import axios from 'axios';
-import getCookie from '../utils/HelperFunctions';
+import { loadMyPosts, deletePost } from "../APIs/PostsApis";
+
 import './style.css';
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
-  const userToken = getCookie("userToken");
-
-  const config = {
-    headers: {
-      authorization: 'Bearer ' + userToken,
-    }
-  };
 
   const navigate = useNavigate();
 
   useEffect(() => {
-
-    fetch(process.env.REACT_APP_BACKEND_API + "posts/me", config)
-      .then(response => response.json())
+    loadMyPosts()
       .then(data => {
-        setPosts(data);
+          setPosts(data);
       })
       .catch(
         response => {
-          alert("An unexpected error occurred, please try loggin in again");
+          alert("An unexpected error occurred, please try loggin in again" + response);
           navigate('/login');
-        }
-      );
+        });
   }, []);
 
 
   function removePost(pid) {
-    axios.delete(process.env.REACT_APP_BACKEND_API + "posts/" + pid, config)
+    deletePost(pid)
       .then(data => {
         alert("Post deleted successfully");
         const updatedPosts = posts.filter(p => (p.id !== pid));
@@ -62,11 +52,11 @@ export default function Home() {
             <Link to={'/posts/public'} state={{ user: posts[0]?.userName }} className="btn btn-outline-light p-2 mt-3 me-3 align-left"> Public posts </Link>
             <Link to={'/posts/me/published'} className="btn btn-outline-light p-2 mt-3 me-3 align-left"> My published posts </Link>
             <Link to={'/posts/me/drafted'} className="btn btn-outline-light p-2 mt-3 me-3 align-left"> My drafted posts </Link>
-            <Logout userToken={userToken} />
+            <Logout />
           </div>
         </div>
 
-        <Makepost config={config} setPosts={setPosts} /><br />
+        <Makepost /><br />
         {
           posts?.map(post =>
             <div to className="block-example border border-ligth p-4 m-5">
@@ -75,7 +65,7 @@ export default function Home() {
               <p className="lead text-dark text-center">{post.content}</p>
               <p className="text-dark text-end me-3">Made by user: {post.userName}</p>
               <div className="text-center mt-2">
-                <Link to={'/post/' + post.id + '/edit'} state={{ post: post, config: config }} className="btn btn-outline-primary btn-md me-3">Modify</Link>
+                <Link to={'/post/' + post.id + '/edit'} state={{ post: post }} className="btn btn-outline-primary btn-md me-3">Modify</Link>
                 <button onClick={() => removePost(post.id)} className="btn btn-outline-primary btn-md">Delete </button>
               </div>
             </div>

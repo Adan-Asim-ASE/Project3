@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import axios from 'axios';
+import { createPost } from "../APIs/PostsApis";
 
-
-export default function MakePost({ config, setPosts }) {
+export default function MakePost() {
   let [title, setTitle] = useState("");
   let [content, setContent] = useState("");
   let [status, setStatus] = useState("Published");
@@ -20,10 +19,7 @@ export default function MakePost({ config, setPosts }) {
     event.preventDefault();
 
     let published;
-    if (status === "Published")
-      published = true;
-    else
-      published = false;
+    status === "Published" ? published = true : published = false;
 
     let post = {
       title: title,
@@ -31,7 +27,7 @@ export default function MakePost({ config, setPosts }) {
       published: published,
     };
 
-    await axios.post(process.env.REACT_APP_BACKEND_API + "posts/", post, config)
+    createPost(post)
       .then(data => {
         alert("Post created successfully");
         window.location.reload(false);

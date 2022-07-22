@@ -1,21 +1,24 @@
 import React, { useEffect, useState } from "react";
-import './style.css';
+import { loadAllPublicPosts } from "../APIs/PostsApis";
 import { Link } from "react-router-dom";
+import './style.css';
 
 export default function Main() {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    fetch(process.env.REACT_APP_BACKEND_API + "posts/")
-      .then(response => response.json())
+    loadAllPublicPosts()
       .then(data => {
         setPosts(data);
+      })
+      .catch(response => {
+        alert("Unable to load data, please try again");
+        console.log(response);
       });
-
   }, []);
 
   return (
-    <div className="Main m-5">
+    <div className="main m-5">
       <div className="">
         <div className="text-white m-5 block-example border border-light bg-primary p-2 m-5">
           <div className="text-end">

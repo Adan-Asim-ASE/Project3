@@ -3,7 +3,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from 'react-router';
-import axios from 'axios';
+import { createUser } from '../APIs/UserApis';
 import './style.css';
 
 export default function Signup() {
@@ -34,7 +34,8 @@ export default function Signup() {
     }
 
     let userToken = null;
-    await axios.post(process.env.REACT_APP_BACKEND_API + "users/", user)
+    
+    createUser(user)
       .then(data => {
         userToken = data.data.accessToken;
         document.cookie = 'userToken=' + userToken + '; path=/'

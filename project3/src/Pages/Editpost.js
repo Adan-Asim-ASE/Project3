@@ -3,13 +3,12 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { useLocation, useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router';
-import axios from 'axios';
+import { editPost } from "../APIs/PostsApis";
 import './style.css';
 
 export default function EditPost() {
   const loc = useLocation();
   let post = loc.state.post;
-  let config = loc.state.config;
 
   const { id } = useParams();
   const navigate = useNavigate();
@@ -32,18 +31,15 @@ export default function EditPost() {
   async function submit(event) {
     event.preventDefault();
     let published;
-    if (status === "Published")
-      published = true;
-    else
-      published = false;
-
+    (status === "Published" ? published = true : published = false);
+    
     let post = {
       title: title,
       content: content,
       published: published,
     };
 
-    await axios.post(process.env.REACT_APP_BACKEND_API + "posts/edit/" + id, post, config)
+    await editPost(id, post)
       .then(data => {
         alert("Post updated successfully");
         navigate('/posts/me');

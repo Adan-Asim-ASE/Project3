@@ -1,26 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router';
-import getCookie from '../utils/HelperFunctions';
 import Logout from "./Logout";
-import axios from 'axios';
+import { loadMyPublishedPosts, deletePost } from "../APIs/PostsApis";
 import './style.css';
 
 export default function MyPublishedPosts() {
   const [posts, setPosts] = useState([]);
-  const userToken = getCookie("userToken");
-
-  const config = {
-    headers: {
-      authorization: 'Bearer ' + userToken,
-    }
-  };
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(process.env.REACT_APP_BACKEND_API + "posts/me/published", config)
-      .then(response => response.json())
+    loadMyPublishedPosts()
       .then(data => {
         setPosts(data);
       })
@@ -34,8 +25,8 @@ export default function MyPublishedPosts() {
 
 
   function removePost(pid) {
-    axios.delete(process.env.REACT_APP_BACKEND_API + "posts/" + pid, config)
-      .then(data => {
+    deletePost()
+    .then(data => {
         alert("Post deleted successfully");
         const updatedPosts = posts.filter(p => (p.id !== pid));
         setPosts(updatedPosts);
@@ -60,7 +51,7 @@ export default function MyPublishedPosts() {
             <Link to={'/posts/public'} state={{ user: posts[0]?.userName }} className="btn btn-outline-light p-2 mt-3 me-3 align-left"> Public posts </Link>
             <Link to={'/posts/me/published'} className="btn btn-outline-light p-2 mt-3 me-3 align-left"> My published posts </Link>
             <Link to={'/posts/me/drafted'} className="btn btn-outline-light p-2 mt-3 me-3 align-left"> My drafted posts </Link>
-            <Logout userToken={userToken} />
+            <Logout />
           </div>
         </div>
 
@@ -72,7 +63,7 @@ export default function MyPublishedPosts() {
               <p className="lead text-dark text-center">{post.content}</p>
               <p className="text-dark text-end me-3">Made by user: {post.userName}</p>
               <div className="text-center mt-2">
-                <Link to={'/post/' + post.id + '/edit'} state={{ post: post, config: config }} className="btn btn-outline-primary btn-md me-3">Modify</Link>
+                <Link to={'/post/' + post.id + '/edit'} state={{ post: post }} className="btn btn-outline-primary btn-md me-3">Modify</Link>
                 <button onClick={() => removePost(post.id)} className="btn btn-outline-primary btn-md">Delete </button>
               </div>
             </div>

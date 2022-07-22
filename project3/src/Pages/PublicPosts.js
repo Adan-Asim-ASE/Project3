@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router';
-import getCookie from '../utils/HelperFunctions';
 import { Link, useLocation } from "react-router-dom";
 import Logout from "./Logout";
+import { loadAllPublicPosts } from "../APIs/PostsApis";
 import './style.css';
 
 export default function PublicPosts() {
   const [posts, setPosts] = useState([]);
 
-  const userToken = getCookie("userToken");
   const navigate = useNavigate();
 
   const loc = useLocation();
@@ -16,9 +15,7 @@ export default function PublicPosts() {
 
 
   useEffect(() => {
-
-    fetch(process.env.REACT_APP_BACKEND_API + "posts/")
-      .then(response => response.json())
+    loadAllPublicPosts()
       .then(data => {
         setPosts(data);
       })
@@ -45,7 +42,7 @@ export default function PublicPosts() {
             <Link to={'/posts/public'} state={{ user: posts[0]?.userName }} className="btn btn-outline-light p-2 mt-3 me-3 align-left"> Public posts </Link>
             <Link to={'/posts/me/published'} className="btn btn-outline-light p-2 mt-3 me-3 align-left"> My published posts </Link>
             <Link to={'/posts/me/drafted'} className="btn btn-outline-light p-2 mt-3 me-3 align-left"> My drafted posts </Link>
-            <Logout userToken={userToken} />
+            <Logout />
           </div>
         </div>
         {

@@ -3,7 +3,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from 'react-router';
-import axios from 'axios';
+import { userLogin } from '../APIs/UserApis';
 import './style.css';
 
 
@@ -31,16 +31,15 @@ export default function Login() {
         password: password
       };
 
-      await axios.post(process.env.REACT_APP_BACKEND_API + "users/login", data)
-        .then(data => {
-          userToken = data.data.accessToken;
-          document.cookie = 'userToken=' + userToken + '; path=/'
-        })
-        .catch(
-          response => {
-            alert("Login Failed");
-          }
-        );
+    await userLogin(data)
+      .then(data => {
+        userToken = data.accessToken;
+        document.cookie = 'userToken=' + userToken + '; path=/'
+      })
+      .catch(response => {
+          alert("Login Failed");
+        }
+      );
     }
 
     if (userToken != null) {
