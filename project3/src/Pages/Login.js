@@ -1,15 +1,21 @@
-import React, { useState } from "react";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import { NavLink } from "react-router-dom";
+/* eslint-disable react/jsx-one-expression-per-line */
+/* eslint-disable react/jsx-no-bind */
+/* eslint-disable no-alert */
+/* eslint-disable prefer-const */
+import React, { useState } from 'react';
+import Form from 'react-bootstrap/Form';
+import { NavLink } from 'react-router-dom';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { useNavigate } from 'react-router';
 import { userLogin } from '../APIs/UserApis';
+import { Heading } from '../Components/LoginSignup/Heading';
+import { InputField } from '../Components/LoginSignup/InputField';
+import { SubmitButton } from '../Components/LoginSignup/SubmitButton';
 import './style.css';
 
-
 export default function Login() {
-  let [email, setEmail] = useState("");
-  let [password, setPassword] = useState("");
+  let [email, setEmail] = useState('');
+  let [password, setPassword] = useState('');
 
   const navigate = useNavigate();
 
@@ -27,59 +33,58 @@ export default function Login() {
     let userToken = null;
     if (email.length && password.length) {
       const data = {
-        email: email,
-        password: password
+        email,
+        password,
       };
 
-    await userLogin(data)
-      .then(data => {
-        userToken = data.accessToken;
-        document.cookie = 'userToken=' + userToken + '; path=/'
-      })
-      .catch(response => {
-          alert("Login Failed");
-        }
-      );
+      await userLogin(data)
+        // eslint-disable-next-line no-shadow
+        .then((data) => {
+          userToken = data.accessToken;
+          // eslint-disable-next-line prefer-template
+          document.cookie = 'userToken=' + userToken + '; path=/';
+        })
+        .catch(() => {
+          alert('Login Failed');
+        });
     }
 
     if (userToken != null) {
-      alert("Login Successful");
+      alert('Login Successful');
       navigate('/posts/me');
     }
   }
 
   return (
+    // eslint-disable-next-line react/jsx-filename-extension
     <div className="Center">
       <Form onSubmit={submit} className="block-example border border-ligth p-4">
-        <h2 className="mb-4 mt-2 text-primary text-center"><strong>LOGIN</strong></h2>
-        <hr />
-        <Form.Group className="mb-3" controlId="email">
-          <Form.Label className="left-margin mb-3 mt-2"><strong>Email</strong></Form.Label>
-          <Form.Control
-            autoFocus
-            type="email"
-            placeholder="name@example.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="password">
-          <Form.Label className="mb-3 mt-3"><strong>Password</strong></Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="******"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </Form.Group>
+        <Heading heading="Login" />
+
+        <InputField
+          focus
+          label="Email"
+          type="email"
+          placeholder="name@example.com"
+          value={email}
+          onChangeFunction={setEmail}
+        />
+        <InputField
+          focus={false}
+          label="Password"
+          type="password"
+          placeholder="******"
+          value={password}
+          onChangeFunction={setPassword}
+        />
+
         <div className="text-center mt-4">No account? Click here to
-          <NavLink to={{ pathname: "/signup" }}>
+          <NavLink to={{ pathname: '/signup' }}>
             <span className="text-primary NavLink"> SignUp</span>
           </NavLink>
         </div>
-        <Button className="mt-4 mb-3" block size="md" type="submit" disabled={!validate()}>
-          Login
-        </Button>
+
+        <SubmitButton title="Login" validationFunction={validate} />
       </Form>
     </div>
   );

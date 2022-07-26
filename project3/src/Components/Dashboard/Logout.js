@@ -1,4 +1,6 @@
-import Button from "react-bootstrap/Button";
+/* eslint-disable react/jsx-filename-extension */
+/* eslint-disable react/react-in-jsx-scope */
+import Button from 'react-bootstrap/Button';
 
 function logout() {
   document.cookie = 'userToken=none; path=/';

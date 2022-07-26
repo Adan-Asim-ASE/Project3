@@ -1,12 +1,18 @@
-import React, { useState } from "react";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import { createPost } from "../APIs/PostsApis";
+/* eslint-disable prefer-const */
+/* eslint-disable no-unused-expressions */
+/* eslint-disable react/jsx-no-bind */
+/* eslint-disable react/jsx-filename-extension */
+/* eslint-disable no-alert */
+// eslint-disable-next-line import/no-extraneous-dependencies
+import React, { useState } from 'react';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import { createPost } from '../APIs/PostsApis';
 
 export default function MakePost() {
-  let [title, setTitle] = useState("");
-  let [content, setContent] = useState("");
-  let [status, setStatus] = useState("Published");
+  let [title, setTitle] = useState('');
+  let [content, setContent] = useState('');
+  let [status, setStatus] = useState('Published');
 
   function validate() {
     if (title.length && (content.length > 4)) {
@@ -19,33 +25,33 @@ export default function MakePost() {
     event.preventDefault();
 
     let published;
-    status === "Published" ? published = true : published = false;
+    status === 'Published' ? published = true : published = false;
 
-    let post = {
-      title: title,
-      content: content,
-      published: published,
+    const post = {
+      title,
+      content,
+      published,
     };
 
     createPost(post)
-      .then(data => {
-        alert("Post created successfully");
+      .then(() => {
+        alert('Post created successfully');
         window.location.reload(false);
 
-        setTitle("");
-        setContent("");
-        setStatus("Published");
+        setTitle('');
+        setContent('');
+        setStatus('Published');
       })
       .catch(
-        response => {
-          alert("An unexpected error occurred ");
-        }
+        () => {
+          alert('An unexpected error occurred ');
+        },
       );
   }
 
   const handleSelect = (e) => {
-    setStatus(e.target.value)
-  }
+    setStatus(e.target.value);
+  };
 
   return (
     <div className="">
@@ -84,6 +90,6 @@ export default function MakePost() {
           </Button>
         </div>
       </Form>
-    </div >
+    </div>
   );
 }

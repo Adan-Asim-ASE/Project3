@@ -1,21 +1,28 @@
-import React, { useState } from "react";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
+/* eslint-disable react/jsx-no-bind */
+/* eslint-disable react/jsx-filename-extension */
+/* eslint-disable no-alert */
+/* eslint-disable prefer-const */
+/* eslint-disable semi */
+
+import React, { useState } from 'react';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 import { useLocation, useParams } from 'react-router-dom';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { useNavigate } from 'react-router';
-import { editPost } from "../APIs/PostsApis";
+import { editPost } from '../APIs/PostsApis';
 import './style.css';
 
 export default function EditPost() {
   const loc = useLocation();
-  let post = loc.state.post;
+  let { post } = loc.state;
 
   const { id } = useParams();
   const navigate = useNavigate();
 
   let [title, setTitle] = useState(post.title);
   let [content, setContent] = useState(post.content);
-  let [status, setStatus] = useState(post.published === true ? "Published" : "Drafted");
+  let [status, setStatus] = useState(post.published === true ? 'Published' : 'Drafted');
 
   function validate() {
     if (title.length > 0 && content.length > 5) {
@@ -31,23 +38,23 @@ export default function EditPost() {
   async function submit(event) {
     event.preventDefault();
     let published;
-    (status === "Published" ? published = true : published = false);
-    
+    // eslint-disable-next-line no-unused-expressions
+    (status === 'Published' ? published = true : published = false);
+    // eslint-disable-next-line no-shadow
     let post = {
-      title: title,
-      content: content,
-      published: published,
+      title,
+      content,
+      published,
     };
 
     await editPost(id, post)
-      .then(data => {
-        alert("Post updated successfully");
+      .then(() => {
+        alert('Post updated successfully');
         navigate('/posts/me');
       })
-      .catch(response => {
-        alert("An unexpected error occurred ");
-      }
-      );
+      .catch(() => {
+        alert('An unexpected error occurred ');
+      });
   }
 
   return (

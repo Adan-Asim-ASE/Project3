@@ -1,5 +1,8 @@
+/* eslint-disable react/jsx-filename-extension */
+/* eslint-disable react/react-in-jsx-scope */
 import './App.css';
-import Login from './Pages/Login'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Login from './Pages/Login';
 import Signup from './Pages/Signup';
 import Main from './Pages/Main';
 import Home from './Pages/Home';
@@ -9,11 +12,7 @@ import MyDraftedPosts from './Pages/MyDraftedPosts';
 import PublicPosts from './Pages/PublicPosts';
 import ProtectedRoute from './Pages/ProtectedRoute';
 
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-
-
 function App() {
-
   return (
     <BrowserRouter>
       <Routes>
@@ -28,8 +27,9 @@ function App() {
           <Route path="/posts/public" element={<PublicPosts />} />
           <Route path="/post/:id/edit" element={<Editpost />} />
         </Route>
+
       </Routes>
-    </BrowserRouter >
+    </BrowserRouter>
   );
 }
 
