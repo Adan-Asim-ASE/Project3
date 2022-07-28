@@ -1,12 +1,15 @@
 export default function getCookie(name) {
-    var cookieArr = document.cookie.split(";");
-  
-    for (var i = 0; i < cookieArr.length; i++) {
-      var cookiePair = cookieArr[i].split("=");
-  
-      if (name === cookiePair[0].trim()) {
-        return decodeURIComponent(cookiePair[1]);
-      }
+  // eslint-disable-next-line prefer-const
+  let cookieArr = document.cookie.split(';');
+
+  // eslint-disable-next-line no-plusplus
+  for (let i = 0; i < cookieArr.length; i++) {
+    // eslint-disable-next-line prefer-const
+    let cookiePair = cookieArr[i].split('=');
+
+    if (name === cookiePair[0].trim()) {
+      return decodeURIComponent(cookiePair[1]);
     }
-    return null;
   }
+  return null;
+}
